@@ -9,6 +9,9 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+from scrapy import log
+
+LOG_LEVER = 'INFO'
 BOT_NAME = 'fistbook'
 
 SPIDER_MODULES = ['fistbook.spiders']

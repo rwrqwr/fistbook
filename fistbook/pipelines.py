@@ -8,7 +8,13 @@
 
 class FistbookPipeline(object):
     def process_item(self, item, spider):
-    	
-        print(item)
 
+        print(item['bookname'])
+        print(item['title'])
+        #for i in item['body']:
+        #    print(i)
+        #print(item['body'])
+        with open('E:\\studypy\\test2\\'+''.join(item['bookname'])+'.txt', 'a+', encoding='utf-8') as f:
+            f.write(item['title'])
+            f.write("".join(item['body']))
         return item
