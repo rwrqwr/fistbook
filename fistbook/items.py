@@ -18,3 +18,6 @@ class FistbookItem(scrapy.Item):
     #章节内容
     body = scrapy.Field()
 
+    #用来排序 scrapy异步处理Request请求，Scrapy发送请求之后，不会等待这个请求的响应,他会同时发送其他请求或者做别的事情。
+    order_id = scrapy.Field()
+

@@ -1,41 +1,27 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from fistbook.items import FistbookItem
+from .util import get_tit_num,Cn2An
 
 
 class DemoSpider(scrapy.Spider):
     name = 'demo'
     allowed_domains = ["xbiquge.la"]
-    
+    start_urls = ['http://www.xbiquge.la/paihangbang/']
     #开始爬取的url链接
     #http://www.xbiquge.la/paihangbang/
 
     #每本小说的链接
     novel_list = []
     #开始的链接
-    start_urls = ['http://www.xbiquge.la/paihangbang/']
+    
 
     def parse(self, response):
-        '''
-        parse()函数接收Response参数，就是网页爬取后返回的数据
-        用于处理响应，他负责解析爬取的内容
-        生成解析结果的字典，并返回新的需要爬取的请求
-        '''
         item = FistbookItem()
 
-        #xpath规则可以通过查看网页源文件得出
-        name = response.xpath('//h1/text()')
-
-
-        #
         listt= response.xpath('//ul/li/a/@href').extract()
         del listt[:10]
         listt = list(set(listt))
-        '''
-        item['bookname'] = listt
-        return item
-        '''
-
         for li in listt:
             yield scrapy.Request(url=li, callback=self.get_bookurl)
 
@@ -43,7 +29,7 @@ class DemoSpider(scrapy.Spider):
     def get_bookurl(self, response):
 
         bookurl = response.xpath('//dd/a/@href').extract()
-
+        a = 0
         for url in bookurl:
             yield scrapy.Request(url='http://www.xbiquge.la'+url,callback=self.get_content)
 
@@ -54,5 +40,7 @@ class DemoSpider(scrapy.Spider):
         item['title'] = response.xpath('//div[@class="bookname"]/h1/text()').extract()[0]
         body = response.xpath('//div[@id="content"]/text()').extract()
         text = ''.join(body).strip().replace('\xa0\xa0\xa0\xa0','\n  ').replace('\r',' ')
+        item['order_id'] = Cn2An(get_tit_num(item['title']))
+        print(item['order_id'])
         item['body'] = text
         return item
