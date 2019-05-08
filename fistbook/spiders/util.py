@@ -18,7 +18,8 @@ num_list = ['1','2','3','4','5','6','7','8','9','0','一','二','三','四','五
 def get_tit_num(title):
     result =''
     for char in title:
-
+        if char == '章':
+            return result
         if char in num_list:
             result+=char
     return result
@@ -62,4 +63,4 @@ def Cn2An(chinese_digits):
 
 
 # test
-print (Cn2An(get_tit_num('正文卷 第6章 中暑，好漂亮')))
+print (Cn2An(get_tit_num('正文卷 第6章 中暑一，好漂亮')))
